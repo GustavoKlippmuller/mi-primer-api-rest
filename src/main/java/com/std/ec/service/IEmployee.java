@@ -11,4 +11,6 @@ public interface IEmployee {
     Employee addEmployee(Employee employee);
     Employee updateEmployee(Employee employee);
     void deleteEmployee(Employee employee);
+    Employee getEmployeeByFullName(String firstName, String lastName);
+    Employee getEmployeeByDocument(String documentNumber, String documentType);
 }

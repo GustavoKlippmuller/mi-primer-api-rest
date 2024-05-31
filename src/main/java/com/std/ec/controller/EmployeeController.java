@@ -14,7 +14,7 @@ public class EmployeeController {
     @Autowired
     private IEmployee employeeService;
 
-    @GetMapping("emplotees")
+    @GetMapping("employees")
     public List<Employee> getAllEmployees() {
         return employeeService.getEmployees();
     }
@@ -38,5 +38,15 @@ public class EmployeeController {
     public void deleteEmployee(@PathVariable Long id) {
         Employee employee = employeeService.findById(id);
         employeeService.deleteEmployee(employee);
+    }
+
+    @GetMapping("employee/document")
+    public Employee getEmployeeByDocument(@RequestParam String documentNumber, @RequestParam String documentType) {
+        return employeeService.getEmployeeByDocument(documentNumber, documentType);
+    }
+
+    @GetMapping("employee/name")
+    public Employee getEmployeeByFullName(@RequestParam String firstName, @RequestParam String lastName) {
+        return employeeService.getEmployeeByFullName(firstName, lastName);
     }
 }

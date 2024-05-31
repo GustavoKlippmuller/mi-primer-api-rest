@@ -1,9 +1,7 @@
 package com.std.ec.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -21,7 +19,9 @@ public class Employee {
     private Date birthdate;
     private String documentType;
     private String documentNumber;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String phoneNumber;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String cellPhoneNumber;
     private String emailAddress;
 }

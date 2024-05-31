@@ -43,4 +43,14 @@ public class EmployeeImpl implements IEmployee {
     public void deleteEmployee(Employee employee) {
         employeeDao.delete(employee);
     }
+
+    @Override
+    public Employee getEmployeeByFullName(String firstName, String lastName) {
+        return employeeDao.findEmployeeByFirstNameAndLastName(firstName, lastName).orElse(null);
+    }
+
+    @Override
+    public Employee getEmployeeByDocument(String documentNumber, String documentType) {
+        return employeeDao.findEmployeeByDocumentNumberAndDocumentType(documentNumber, documentType).orElse(null);
+    }
 }
