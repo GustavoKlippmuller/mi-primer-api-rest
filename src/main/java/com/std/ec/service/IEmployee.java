@@ -1,7 +1,6 @@
 package com.std.ec.service;
 
 import com.std.ec.model.entity.Employee;
-
 import java.util.List;
 
 public interface IEmployee {

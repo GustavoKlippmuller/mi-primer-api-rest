@@ -30,6 +30,7 @@ public class EmployeeImpl implements IEmployee {
     @Transactional
     @Override
     public Employee addEmployee(Employee employee) {
+        employee.setDocumentType(employee.getDocumentType().toUpperCase());
         return employeeDao.save(employee);
     }
 
@@ -51,6 +52,7 @@ public class EmployeeImpl implements IEmployee {
 
     @Override
     public Employee getEmployeeByDocument(String documentNumber, String documentType) {
+        documentType = documentType.toUpperCase();
         return employeeDao.findEmployeeByDocumentNumberAndDocumentType(documentNumber, documentType).orElse(null);
     }
 }
