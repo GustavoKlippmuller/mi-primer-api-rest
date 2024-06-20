@@ -1,7 +1,10 @@
 package com.std.ec.controller;
 
+import com.std.ec.exceptions.InvalidDataException;
+import com.std.ec.model.dto.EmployeeDto;
 import com.std.ec.model.entity.Employee;
 import com.std.ec.service.IEmployee;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,24 +29,32 @@ public class EmployeeController {
     }
 
     @PostMapping("employee")
-    public ResponseEntity<?> addEmployee(@RequestBody Employee employee) {
-        String[] documentTypes = {"DNI", "L.C", "L.E", "C.I", "PAS"};
-        boolean isPresent = false;
-        for (String documentType : documentTypes) {
-            if (employee.getDocumentType().toUpperCase().equals(documentType)) {
-                isPresent = true;
-                break;
+    public ResponseEntity<?> addEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
+        Employee employee = employeeDto.toEmployee();
+            try {
+                Employee employeeCreated = employeeService.addEmployee(employee);
+                return new ResponseEntity<>(employeeCreated, HttpStatus.CREATED);
+            } catch (InvalidDataException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
-        }
-        if (!isPresent) {
-            return new ResponseEntity<>(employee, HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(employeeService.addEmployee(employee), HttpStatus.CREATED);
     }
 
-    @PutMapping("employee")
-    public Employee updateEmployee(@RequestBody Employee employee) {
-        return employeeService.updateEmployee(employee);
+    @PutMapping("employee/{id}")
+    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeDto employeeDto, @PathVariable Long id) {
+        Employee employee = employeeService.findById(id);
+        if (employee == null) {
+            return new ResponseEntity<>(employeeDto, HttpStatus.NOT_FOUND);
+        }
+        employee.setFirstName(employeeDto.getFirstName());
+        employee.setLastName(employeeDto.getLastName());
+        employee.setDocumentType(employeeDto.getDocumentType());
+        employee.setDocumentNumber(employeeDto.getDocumentNumber());
+        employee.setEmailAddress(employeeDto.getEmailAddress());
+        employee.setPhoneNumber(employeeDto.getPhoneNumber());
+        employee.setBirthdate(employeeDto.getBirthdate());
+        employee.setCellPhoneNumber(employeeDto.getCellPhoneNumber());
+        employee.setId(id);
+        return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
     }
 
     @DeleteMapping("employee/{id}")

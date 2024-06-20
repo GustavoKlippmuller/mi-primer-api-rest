@@ -8,16 +8,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     })
     .then(data => {
         console.log(data);
-        let employeeList;
+        let employeeList = "";
         for (let employeeData of data) {
             console.log(employeeData.birthdate.substring(0,4));
             console.log(employeeData.birthdate.substring(5,7));
             console.log(employeeData.birthdate.substring(8,10));
 
-/*            const day = String(employeeData.birthdate.getDay()).padStart(2, '0');
-            const month = String(employeeData.birthdate.getMonth() + 1).padStart(2, '0');
-            const year = String(employeeData.birthdate.getFullYear());
-            const formattedDate = day + "-" + month + "-" + year;*/
             let employee = "<tr>\n" +
                 "<td>" + employeeData.lastName + ", " + employeeData.firstName + "</td>" +
                 "<td>" + employeeData.birthdate.substring(8,10) + "-" + employeeData.birthdate.substring(5,7) + "-" + employeeData.birthdate.substring(0,4) + "</td>" +
