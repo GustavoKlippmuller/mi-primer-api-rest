@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -28,7 +29,8 @@ public class DataInitializer {
                     "12345678",
                     "",
                     "+541112345678",
-                    "meliodas.dragon@example.com"
+                    "meliodas.dragon@example.com",
+                    LocalDateTime.now()
             ));
             employeeDao.save(new Employee(
                     0L,
@@ -39,7 +41,8 @@ public class DataInitializer {
                     "23456789",
                     "+541123456789",
                     "",
-                    "elizabeth.liones@example.com"
+                    "elizabeth.liones@example.com",
+                    LocalDateTime.now()
             ));
             employeeDao.save(new Employee(
                     0L,
@@ -50,7 +53,8 @@ public class DataInitializer {
                     "34567890",
                     "+5491134567890",
                     "",
-                    "diane.serpent@example.com"
+                    "diane.serpent@example.com",
+                    LocalDateTime.now()
             ));
             employeeDao.save(new Employee(
                     0L,
@@ -61,7 +65,8 @@ public class DataInitializer {
                     "45678901",
                     "+5491145678901",
                     "",
-                    "ban.fox@example.com"
+                    "ban.fox@example.com",
+                    LocalDateTime.now()
             ));
             employeeDao.save(new Employee(
                     0L,
@@ -72,7 +77,8 @@ public class DataInitializer {
                     "56789012",
                     "",
                     "+5411156789012",
-                    "king.grizzly@example.com"
+                    "king.grizzly@example.com",
+                    LocalDateTime.now()
             ));
             employeeDao.save(new Employee(
                     0L,
@@ -83,7 +89,8 @@ public class DataInitializer {
                     "67890123",
                     "+541167890123",
                     "",
-                    "gowther.goat@example.com"
+                    "gowther.goat@example.com",
+                    LocalDateTime.now()
             ));
             employeeDao.save(new Employee(
                     0L,
@@ -94,7 +101,8 @@ public class DataInitializer {
                     "78901234",
                     "+5491178901234",
                     "",
-                    "merlin.boar@example.com"
+                    "merlin.boar@example.com",
+                    LocalDateTime.now()
             ));
             employeeDao.save(new Employee(
                     0L,
@@ -105,7 +113,8 @@ public class DataInitializer {
                     "89012345",
                     "+5491189012345",
                     "",
-                    "escanor.lion@example.com"
+                    "escanor.lion@example.com",
+                    LocalDateTime.now()
             ));
         };
     }

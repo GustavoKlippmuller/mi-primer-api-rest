@@ -8,6 +8,7 @@ import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
@@ -33,30 +34,10 @@ public class EmployeeTest {
 
     @Test
     public void testGetAllEmployees() {
-        Employee employee1 = new Employee(
-                0L,
-                "Meliodas",
-                "Dragon de la Ira",
-                Date.from((LocalDate.of(1985, 5, 15)).atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                "DNI",
-                "12345678",
-                "",
-                "+541112345678",
-                "meliodas.dragon@example.com"
-        );
-        Employee employee2 = new Employee(
-                0L,
-                "Elizabeth",
-                "Liones",
-                Date.from((LocalDate.of(1990, 8, 20)).atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                "DNI",
-                "23456789",
-                "+541123456789",
-                "",
-                "elizabeth.liones@example.com"
-        );
-
-        when(repository.findAll()).thenReturn(Arrays.asList(employee1, employee2));
+        when(repository.findAll()).thenReturn(Arrays.asList(
+                getEmployee("123456789"),
+                getEmployee("987654321")
+        ));
 
         List<Employee> employees = service.getEmployees();
 
@@ -68,18 +49,7 @@ public class EmployeeTest {
 
     @Test
     public void testGetEmployeeById() {
-        Employee employee = new Employee(
-                0L,
-                "Meliodas",
-                "Dragon de la Ira",
-                Date.from((LocalDate.of(1985, 5, 15)).atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                "DNI",
-                "12345678",
-                "",
-                "+541112345678",
-                "meliodas.dragon@example.com"
-        );
-        when(repository.findById(1L)).thenReturn(Optional.of(employee));
+        when(repository.findById(1L)).thenReturn(Optional.of(getEmployee("123456789")));
 
         Employee foundEmployee = service.findById(1L);
 
@@ -90,23 +60,67 @@ public class EmployeeTest {
 
     @Test
     public void testCreateEmployee() {
-        Employee employee = new Employee(
-                0L,
-                "Meliodas",
-                "Dragon de la Ira",
-                Date.from((LocalDate.of(1985, 5, 15)).atStartOfDay(ZoneId.systemDefault()).toInstant()),
-                "DNI",
-                "12345678",
-                "",
-                "+541112345678",
-                "meliodas.dragon@example.com"
-        );
+        Employee employee = getEmployee("12345679");
         when(repository.save(employee)).thenReturn(employee);
 
         Employee createEmployee = service.addEmployee(employee);
 
         assertNotNull(createEmployee);
         assertEquals(employee, createEmployee);
+    }
+
+    @Test
+    public void testUpdateEmployee() {
+
+        Employee employeeNew = getEmployee("123456789");
+
+        when(repository.save(any(Employee.class))).thenReturn(employeeNew);
+
+        Employee result = service.updateEmployee(employeeNew);
+
+        assertNotNull(result);
+        assertEquals(employeeNew, result);
+    }
+
+    @Test
+    public void testDeleteEmployee() {
+        Employee employeeNew = getEmployee("123456789");
+        when(repository.findById(employeeNew.getId())).thenReturn(Optional.of(employeeNew));
+        service.deleteEmployee(employeeNew);
+        verify(repository, times(1)).delete(employeeNew);
+    }
+
+    @Test
+    public void testFindEmployeeByDocument() {
+        Employee employeeNew = getEmployee("123456789");
+        when(repository.findEmployeeByDocumentNumberAndDocumentType(employeeNew.getDocumentNumber(), employeeNew.getDocumentType())).thenReturn(Optional.of(employeeNew));
+        Employee result = service.getEmployeeByDocument(employeeNew.getDocumentNumber(), employeeNew.getDocumentType());
+        assertNotNull(result);
+        assertEquals(employeeNew, result);
+    }
+
+    @Test
+    public void testFindEmployeeByName() {
+        Employee employeeNew = getEmployee("123456789");
+        when(repository.findEmployeeByFirstNameAndLastName(employeeNew.getFirstName(), employeeNew.getLastName())).thenReturn(Optional.of(employeeNew));
+        Employee result = service.getEmployeeByFullName(employeeNew.getFirstName(), employeeNew.getLastName());
+        assertNotNull(result);
+        assertEquals(employeeNew, result);
+    }
+
+    private Employee getEmployee(String document) {
+        return new Employee(
+                0L,
+                "Meliodas",
+                "Dragon de la Ira",
+                Date.from((LocalDate.of(1985, 5, 15)).atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                "DNI",
+                document,
+                "",
+                "+541112345678",
+                "meliodas.dragon@example.com",
+                LocalDateTime.now()
+        );
     }
 
 }
